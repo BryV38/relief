@@ -4,6 +4,7 @@ import axios from 'axios';
 
 // import Filters from './components/Filters';
 import ChairityList from './components/CharityList';
+import Filters from './components/Filters';
 
 class App extends Component {
   constructor(props) {
@@ -32,26 +33,26 @@ class App extends Component {
   }
 
 
-  // componentDidMount() {
-  //   const defaultTableList = this.state.charityTopTenList[this.state.charityTopTenList.length - 1];
-  //   const body = {
-  //     default: this.state.defaultTableList
-  //   };
+  componentDidMount() {
+    const defaultTableList = this.state.charityTopTenList[this.state.charityTopTenList.length - 1];
+    const body = {
+      default: this.state.defaultTableList
+    };
 
-  //   axios({
-  //     method: 'get',
-  //     url: '/blah', //need specific route 
-  //     data: body,
-  //   })
-  //   .then(function (res) {
-  //     this.setState(prevState => {
-  //       return {
-  //         ...prevState,
-  //         currentTableListData: res,
-  //       }
-  //     })
-  //   })
-  // }
+    axios({
+      method: 'get',
+      url: '/blah', //need specific route 
+      data: body,
+    })
+    .then(function (res) {
+      this.setState(prevState => {
+        return {
+          ...prevState,
+          currentTableListData: res,
+        }
+      })
+    })
+  }
 
   handleChange (e) {
     this.setState({
@@ -91,11 +92,12 @@ class App extends Component {
   render() {
     return (
       <div>
+        <Filters />
         Filters
-        <form onSubmit={this.handleSubmit}>
+        {/* <form onSubmit={this.handleSubmit}>
           <input defaultValue={this.state.zip} onChange={(e) => this.handleChange(e)} />
           <button>Submit</button>
-        </form>
+        </form> */}
         <br />
         <br />
         {this.state.zip}
