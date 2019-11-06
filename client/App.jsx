@@ -12,7 +12,7 @@ class App extends Component {
     this.state = {
       filterState: 'filterStuff', // Delete later
       zip: '90291',
-      chairityState: 'chairityStuff', //Delete later
+      charityState: 'chairityStuff', //Delete later
       charityTopTenList: [
         'Charities with Perfect Scores',
         '10 Most Followed Charities',
@@ -26,7 +26,32 @@ class App extends Component {
         `10 of the Best Charities Everyone's Heard Of`,
         '10 Charities Worth Watching',
       ],
-      currentTableListData: null,
+      currentTableListData: [{
+        name: 'name 1',
+        website: 'website 2',
+        mission: 'mission 3',
+        rate: 'rate 4',
+        category: 'category 5',
+        cause: 'cause 6',
+        city: 'city 7',
+        state: 'state 8',
+        zip: 'zip 9',
+        contact: 'contact 10'
+      }],
+      rows: [{
+        name: 'name 1',
+        website: 'website 2',
+        mission: 'mission 3',
+        rate: 'rate 4',
+        category: 'category 5',
+        cause: 'cause 6',
+        city: 'city 7',
+        state: 'state 8',
+        zip: 'zip 9',
+        contact: 'contact 10',
+        ein: 'contact 11'
+      }],
+      defaultZip: '90013'
     }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -34,24 +59,29 @@ class App extends Component {
 
 
   componentDidMount() {
-    const defaultTableList = this.state.charityTopTenList[this.state.charityTopTenList.length - 1];
+    // const defaultTableList = this.state.charityTopTenList[this.state.charityTopTenList.length - 1];
+    // const body = {
+    //   default: this.state.defaultTableList
+    // };
+
     const body = {
-      default: this.state.defaultTableList
+      zip: this.state.defaultZip
     };
 
     axios({
-      method: 'get',
-      url: '/blah', //need specific route 
-      data: body,
+      method: 'POST',
+      url: '/api/charity',
+      body: body
     })
-    .then(function (res) {
-      this.setState(prevState => {
-        return {
-          ...prevState,
-          currentTableListData: res,
-        }
+      .then(res => {
+        this.setState(prevState => {
+          return {
+            ...prevState,
+            rows: res.data
+          }
+        })
+        console.log(this.state.rows)
       })
-    })
   }
 
   handleChange (e) {
@@ -62,29 +92,22 @@ class App extends Component {
 
   handleSubmit (e) {
     e.preventDefault();
-    // this.setState(prevState => ({
-    //   zip: prevState.zip.concat(this.state.zip),
-    // }))
-    // console.log(this.state.zip)
-
-    
+ 
     const body = {
       zip: this.state.zip
     };
 
     axios({
-      method: 'post',
-      url: '/api/charity/:ein', //need specific route 
-      data: body,
+      method: 'POST',
+      url: '/api/charity', 
+      body: body
     })
-    .then(function (res) {
-      console.log(res);
-      this.setState(prevState => {
-        return {
-          ...prevState,
-          currentTableListData: res,
-        }
+    .then(res => {
+      
+      this.setState({
+        currentTableListData: res.data,
       })
+      console.log(this.state.currentTableListData);
     })
 
   }
@@ -102,7 +125,7 @@ class App extends Component {
         <br />
         {this.state.zip}
         <br />
-        <ChairityList chairityStuff={this.state.chairityState} currentTableListData={this.state.currentTableListData}/>
+        <CharityList charityState={this.state.charityState} rows={this.state.rows}/>
       </div>
     )
   }
