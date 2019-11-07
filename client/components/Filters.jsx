@@ -100,7 +100,7 @@ export default function Filters(props) {
     };
     
     if (typeof zip === 'number') body.zip = zip;
-    if (cause > 0) body.causeID = cause;
+    if (cause > 0) body.causeID = 1;
     if (rating >= 1 || rating.length >= 1) body.minRating = rating;
     console.log(body) 
 
